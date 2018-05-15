@@ -1,0 +1,53 @@
+class Node:
+    def __init__(self):
+        self.val = 0
+        self.children = {}
+        
+class TrieNode:
+    def __init__(self):
+        self.root = Node()
+        
+    def insert(self, dic):
+        for word in dic:
+            cur = self.root
+            for i in word:
+                node = cur.children.get(i)
+                if not node:
+                    node = Node()
+                    cur.children[i] = node
+                cur = node
+            cur.val = 1
+         
+                
+    def match(self, word):  
+        cur = self.root
+        for i in range(len(word)):
+            node = cur.children.get(word[i])
+            if not node:
+                return word
+            elif node.val == 1:
+                return ''.join(word[:i+1])
+            cur = node
+            
+        return word
+                 
+        
+class Solution:   
+    def replaceWords(self, dic, sentence):
+        """
+        :type dic: List[str]
+        :type sentence: str
+        :rtype: str
+        """
+        trie = TrieNode()
+        trie.insert(dic)
+        arr = sentence.split()
+        res = []
+        for word in arr:
+            trie.match(word)
+            res.append(trie.match(word))
+        result = ' '.join(res)
+
+        return result
+        
+        
