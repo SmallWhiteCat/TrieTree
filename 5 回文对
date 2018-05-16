@@ -1,0 +1,30 @@
+class Solution:
+    def isPalindrome(self, word):
+        return word==word[::-1]
+    
+    def palindromePairs(self, words):
+        """
+        :type words: List[str]
+        :rtype: List[List[int]]
+        """
+        dic = {w: i for i, w in enumerate(words)}
+ 
+        res = set()
+        for word in words:
+            if "" in dic and word and self.isPalindrome(word):
+                res.add((dic[""], dic[word]))
+                res.add((dic[word], dic[""]))
+            cur = word[::-1]
+            if cur in dic and dic[cur] != dic[word]:
+                res.add((dic[cur], dic[word]))
+                res.add((dic[word], dic[cur]))
+        
+            for i in range(1, len(word)):   #l, r至少有一个字符
+                l, r = word[:i], word[i:]
+                if self.isPalindrome(l) and r[::-1] in dic:
+                    res.add((dic[r[::-1]], dic[word]))
+                if self.isPalindrome(r) and l[::-1] in dic:
+                    res.add((dic[word], dic[l[::-1]]))
+       
+        return list(res)
+                
